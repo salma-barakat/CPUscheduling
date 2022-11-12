@@ -77,9 +77,9 @@ int main()
     }
     }
 /// checking that scan is done correctly
-    for(int k=0;k< pCount; k++){
-        cout<<p[k].processName<<" "<<p[k].arrivalTime<<" "<<p[k].serviceTime<<endl;
-    }
+//    for(int k=0;k< pCount; k++){
+//        cout<<p[k].processName<<" "<<p[k].arrivalTime<<" "<<p[k].serviceTime<<endl;
+//    }
 
     if(line1 == "stats"){
         if(algorithm == 1){
@@ -94,13 +94,13 @@ int main()
                result[i][j]=' ';
             }
         }
-        for(int i=0;i<pCount;i++){
-            for(int j=0;j<last;j++)
-            {
-               cout<<result[i][j];
-            }
-            cout<<endl;
-        }
+//        for(int i=0;i<pCount;i++){
+//            for(int j=0;j<last;j++)
+//            {
+//               cout<<result[i][j];
+//            }
+//            cout<<endl;
+//        }
         if(algorithm == 1){
         cout<<"FCFS";
 //        while(last){
@@ -121,12 +121,12 @@ int main()
 
         }
          ///printing names of processes currently in queue
-        priority_queue<process,vector<process>,comparefn>temp=q;
-        while(!temp.empty()){
-              cout << temp.top().processName <<" ";
-              temp.pop();
-          }
-        cout<<" time="<<t<<endl;
+//        priority_queue<process,vector<process>,comparefn>temp=q;
+//        while(!temp.empty()){
+//              cout << temp.top().processName <<" ";
+//              temp.pop();
+//          }
+//        cout<<" time="<<t<<endl;
 
         ///to pop the first element in queue + setting their finish time+setting stars***
         if(current==-1){
@@ -134,7 +134,7 @@ int main()
             q.pop();
 
             p[current].finishTime=t+p[current].serviceTime;
-            cout<<"finished ("<<p[current].processName<<") at "<<p[current].finishTime<<endl;
+            //cout<<"finished ("<<p[current].processName<<") at "<<p[current].finishTime<<endl;
             for(int j=t;j<p[current].finishTime;j++)
             {
                 result[current][j]='*';
@@ -148,7 +148,7 @@ int main()
         ///to put points for ready processes...
             priority_queue<process,vector<process>,comparefn> temp2=q;
             while(! temp2.empty()){
-            cout<<"here";
+            //cout<<"here";
             int ready=temp2.top().index;
               temp2.pop();
               result[ready][t]='.';
@@ -182,8 +182,6 @@ case 8:
     break;
 
 }
-
-
 
 ///print of trace
 if(line1=="trace")
