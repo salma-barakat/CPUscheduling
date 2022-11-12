@@ -7,7 +7,10 @@
 #include <iterator>
 #include <bits/stdc++.h>
 using namespace std;
+//int global pCount;
+void FCFS(char processName[], int arrivalTime[], int serviceTime[]){
 
+}
 
 int main()
 {
@@ -16,7 +19,7 @@ int main()
     cin>> line1;
     string algorithm;
     cin>> algorithm;
-    string last;
+    int last;
     cin>> last;
     int pCount;
     cin>> pCount;
@@ -54,10 +57,23 @@ int main()
     for(int k=0;k< pCount; k++){
         cout<<processName[k]<<" "<<arrivalTime[k]<<" "<<serviceTime[k]<<endl;
     }
-
-    if(algorithm == "2"){
-
+    if(line1 == "stats"){
+        if(algorithm == "1"){
+        cout<<"FCFS"<<endl;
+        FCFS(processName, arrivalTime, serviceTime);
     }
+    }
+    else if(line1 == "trace"){
+        if(algorithm == "1"){
+        cout<<"FCFS";
+        while(last){
+            cout<<last%10;
+            last--;
+        }
+    }
+    }
+
+
 
 
     return 0;
