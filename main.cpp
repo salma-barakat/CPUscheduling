@@ -133,25 +133,25 @@ int main()
             q.pop();
 
             p[current].finishTime=t+p[current].serviceTime;
-            cout<<"finished (    "<<p[current].processName<<") at "<<p[current].finishTime<<endl;
+            cout<<"finished ("<<p[current].processName<<") at "<<p[current].finishTime<<endl;
             for(int j=t;j<p[current].finishTime;j++)
             {
                 result[current][j]='*';
             }
 
         }
+        if(t == p[current].finishTime){
+            current = -1;
+        }
         for(int i=0;i<pCount;i++){
             for(int j=0;j<last;j++)
             {
-               cout<<result[i][j];
+               cout<<"|"<<result[i][j];
             }
-            cout<<endl;
+            cout<<"|"<<endl;
         }
 
-//          if(current>-1){
-//          if(t==p[current].finishTime)
-//                current=-1;
-//           }
+
 //     priority_queue<process,vector<process>,comparefn>temp2=q;
 //            while(!temp2.empty())
 //             {
