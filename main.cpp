@@ -132,27 +132,6 @@ int main()
                 t++;
             }
         }
-        // while(t<last){
-        //     while(i<pCount){
-        //         if(!busy && t>=p[i].arrivalTime){
-        //             busy = 1;
-        //             p[i].finishTime = t + p[i].serviceTime;
-        //             finish = p[i].finishTime;
-        //             for(int j=t;j<p[i].finishTime;j++)
-        //             {
-        //                 cout<<"saving result"<<endl;
-        //                 result[i][j]='*';
-        //             }
-        //             i++;    //proceed to the next process
-        //         }
-        //         else if(p[i].arrivalTime >= t){ // if another process is working, so the next will be ready.
-        //             result[i][t] = '.';
-        //         }
-        //         if(t == finish-1)
-        //             busy = 0;
-        //         t++;
-        //     }
-        // }
     }
     
     else{
