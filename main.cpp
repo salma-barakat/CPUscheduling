@@ -103,35 +103,59 @@ int main()
 //        cout<<p[k].processName<<" "<<p[k].arrivalTime<<" "<<p[k].serviceTime<<endl;
 //    }
 
-    if(line1 == "stats"){
-        if(algorithm == 1){
-        cout<<"FCFS"<<endl;
-        //FCFS(processName, arrivalTime, serviceTime);
-    }
-    }
-    else if(line1 == "trace"){
+    if(line1 == "trace"){
         for(int i=0;i<pCount;i++){
             for(int j=0;j<last;j++)
             {
                result[i][j]=' ';
             }
         }
-//        for(int i=0;i<pCount;i++){
-//            for(int j=0;j<last;j++)
-//            {
-//               cout<<result[i][j];
-//            }
-//            cout<<endl;
-//        }
-        if(algorithm == 1){
-        cout<<"FCFS";
-//        while(last){
-//            cout<<last%10;
-//            last--;
-//        }
-        }
     }
 
+    if(algorithm == 1){
+        int i = 0;
+        int busy = 0;
+        int finish = 0;
+        while(t<last && i<pCount){
+            if(p[i].arrivalTime<=t){
+                for(int j=p[i].arrivalTime; j<t; j++){
+                    result[i][j] = '.';
+                }
+                p[i].finishTime = t + p[i].serviceTime;
+                for(int j=t; j<p[i].finishTime; j++){
+                    result[i][j] = '*';
+                }
+                t = p[i].finishTime;
+                i++;
+            }
+            else{
+                t++;
+            }
+        }
+        // while(t<last){
+        //     while(i<pCount){
+        //         if(!busy && t>=p[i].arrivalTime){
+        //             busy = 1;
+        //             p[i].finishTime = t + p[i].serviceTime;
+        //             finish = p[i].finishTime;
+        //             for(int j=t;j<p[i].finishTime;j++)
+        //             {
+        //                 cout<<"saving result"<<endl;
+        //                 result[i][j]='*';
+        //             }
+        //             i++;    //proceed to the next process
+        //         }
+        //         else if(p[i].arrivalTime >= t){ // if another process is working, so the next will be ready.
+        //             result[i][t] = '.';
+        //         }
+        //         if(t == finish-1)
+        //             busy = 0;
+        //         t++;
+        //     }
+        // }
+    }
+    
+    else{
     int current= -1;
     for(t=0;t<last;t++)
     {    ///pushing ready processes into queue
@@ -199,10 +223,11 @@ int main()
               result[ready][t]='.';
             }
         }
+    }
 ///print process name
 switch (algorithm){
 case 1:
-    cout<<"FCFS"<<"   ";
+    cout<<"FCFS"<<"  ";
     break;
 case 2:
     cout<<"RR"<<"   ";
@@ -243,11 +268,11 @@ cout<<endl;
 cout<<"------------------------------------------------"<<endl;
       for(int i=0;i<pCount;i++){
             cout<<p[i].processName<<"     ";
-            for(int j=0;j<last-1;j++)
+            for(int j=0;j<=last-1;j++)
             {
                cout<<"|"<<result[i][j];
             }
-            cout<<"|"<<endl;
+            cout<<"| "<<endl;
 
         }
     cout<<"------------------------------------------------"<<endl;
