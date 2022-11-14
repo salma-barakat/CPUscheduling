@@ -22,8 +22,9 @@ int t=0;
 struct comparefn{
 
 bool operator()(process const& p1,process const&p2)
-{   if (algorithm==3)
-    return p1.serviceTime>p2.serviceTime;
+{
+    if (algorithm==3)
+        return p1.serviceTime>p2.serviceTime;
     else if(algorithm==4)
     {
         if(p1.remainingTime==p2.remainingTime)
@@ -54,15 +55,25 @@ bool operator()(process const& p1,process const&p2)
 }
 };
 
-void FCFS(char processName[], int arrivalTime[], int serviceTime[]){
-
-}
-
 int main()
 {
     string line1;
     cin>> line1;
-    cin>> algorithm;
+    string line2;
+    cin>> line2;
+    int quantum;
+    stringstream ss(line2);
+    int k=0;
+    while (ss.good()) {
+        string substr;
+        getline(ss, substr, '-');
+        if(k == 0){
+            algorithm = stoi(substr);
+            k++;
+        }
+        if(k == 1)
+            quantum = stoi(substr);
+    }
     int last;
     cin>> last;
     int pCount;
@@ -133,7 +144,42 @@ int main()
             }
         }
     }
-    
+    else if (algorithm == 2){
+        int i=0;
+        int busyTime = 0;
+        queue<process>q2;
+        for(t=0; t<last; t++){
+            if(busyTime == t && p[i].arrivalTime <= t){ //if nothing is running
+                for(int j=t; j<t + quantum; j++){   //*** check if quantun is more than service time
+                    result[i][j] = '*';
+                }
+                busyTime = t + quantum;
+                p[i].remainingTime = p[i].serviceTime - quantum;
+                if(p[i].remainingTime > 0)
+                    q2.push(p[i]);
+            }
+
+            else if(busyTime==t && !q2.empty()){ //if nothing is running take from queue
+                i = q2.front().index;
+                q2.pop();
+                for(int j=t; j<t + quantum; j++){   //*** check if quantun is more than service time
+                    result[i][j] = '*';
+                }
+                busyTime = t + quantum;
+                p[i].remainingTime = p[i].serviceTime - quantum;
+                if(p[i].remainingTime > 0)
+                    q2.push(p[i]);
+                else
+                    p[i].finishTime = busyTime;
+            }
+
+            else if(busyTime!=t && p[i].arrivalTime==t){    //if a process is running and another arrived, put the new in queue
+                result[i][t] = '.';
+                q.push(p[i]);
+            }
+        }
+    }
+
     else{
     int current= -1;
     for(t=0;t<last;t++)
