@@ -16,6 +16,7 @@ using namespace std;
      int index;
      float turnaroundTime;
      int remainingTime;
+     int pushTime;
      };
 
 int t=0;
@@ -149,34 +150,72 @@ int main()
         int busyTime = 0;
         queue<process>q2;
         for(t=0; t<last; t++){
-            if(busyTime == t && p[i].arrivalTime <= t){ //if nothing is running
-                for(int j=t; j<t + quantum; j++){   //*** check if quantun is more than service time
-                    result[i][j] = '*';
-                }
-                busyTime = t + quantum;
-                p[i].remainingTime = p[i].serviceTime - quantum;
-                if(p[i].remainingTime > 0)
-                    q2.push(p[i]);
-            }
+            cout<<"at t = "<<t<<endl;
+            if(q2.empty()){
+                if(busyTime == t && p[i].arrivalTime <= t){ //if nothing is running
+                    for(int j=t; j<t + quantum; j++){   //*** check if quantun is more than service time
+                        result[i][j] = '*';
+                    }
+                    cout<<"running 1 "<<p[i].processName<<endl;
+                    cout<<q2.empty()<<endl;
+                    cout<<"after"<<endl;
+                    busyTime = t + quantum;
+                    p[i].remainingTime = p[i].remainingTime - quantum;
+                    if(p[i].remainingTime > 0){
+                        p[i].pushTime = busyTime;
+                        q2.push(p[i]);
+                    }
+                    else
+                        p[i].finishTime = busyTime;
+                    i++;
 
-            else if(busyTime==t && !q2.empty()){ //if nothing is running take from queue
-                i = q2.front().index;
-                q2.pop();
-                for(int j=t; j<t + quantum; j++){   //*** check if quantun is more than service time
-                    result[i][j] = '*';
                 }
-                busyTime = t + quantum;
-                p[i].remainingTime = p[i].serviceTime - quantum;
-                if(p[i].remainingTime > 0)
-                    q2.push(p[i]);
-                else
-                    p[i].finishTime = busyTime;
-            }
-
-            else if(busyTime!=t && p[i].arrivalTime==t){    //if a process is running and another arrived, put the new in queue
+                else if(busyTime!=t && p[i].arrivalTime==t){    //if a process is running and another arrived, put the new in queue
+                cout<<"ready "<< p[i].processName<<endl;
                 result[i][t] = '.';
+                p[i].pushTime = t;
                 q.push(p[i]);
             }
+            }
+
+
+            else if(busyTime==t && !q2.empty()){ //if nothing is running
+                //cout<<"inside first else"<<endl;
+                if (p[i].arrivalTime <= q2.front().pushTime){ //if a process arrived whose arrival is before push
+                    for(int j=t; j<t + quantum; j++){   //*** check if quantun is more than service time
+                        result[i][j] = '*';
+                    }
+                    busyTime = t + quantum;
+                    p[i].remainingTime = p[i].remainingTime - quantum;
+                    if(p[i].remainingTime > 0){
+                        p[i].pushTime = busyTime;
+                        q2.push(p[i]);
+                    }
+                    else
+                        p[i].finishTime = busyTime;
+                    i++;
+                }
+                else{   //pop from queue
+                    int current = q2.front().index;
+                    q2.pop();
+                    for(int j=t; j<t + quantum; j++){   //*** check if quantun is more than service time
+                        result[current][j] = '*';
+                    }
+                    cout<<"running 2 "<<p[current].processName<<endl;
+                    busyTime = t + quantum;
+                    p[current].remainingTime = p[current].remainingTime- quantum;
+                    if(p[current].remainingTime > 0){
+                        p[current].pushTime = busyTime;
+                        q2.push(p[current]);
+                        current++;
+                    }
+                    else
+                        p[current].finishTime = busyTime;
+                    }
+
+            }
+
+
         }
     }
 
