@@ -17,8 +17,6 @@ using namespace std;
      float turnaroundTime;
      int remainingTime;
      int pushTime;
-     int initial_priority;
-     int current_priority;
      };
 
 int t=0;
@@ -45,15 +43,6 @@ bool operator()(process const& p1,process const&p2)
              return p1.arrivalTime>p2.arrivalTime;
         else
             return r1<r2;
-    }
-    else if(algorithm==8)
-    {
-        if(p1.current_priority==p2.current_priority)
-        {
-            return p1.arrivalTime>p2.arrivalTime;
-        }
-        else
-            return p1.current_priority<p2.current_priority;
     }
 
 
@@ -114,10 +103,6 @@ int main()
             p[i].arrivalTime=stoi(substr);
         }
         else{
-            if(algorithm==8)
-            {p[i].initial_priority=stoi(substr);
-            p[i].current_priority=p[i].initial_priority;}
-            else
             p[i].serviceTime=stoi(substr);
             p[i].remainingTime=stoi(substr);
         }
@@ -244,10 +229,6 @@ int main()
     }
 
     else{
-
-
-
-
     int current= -1;
     for(t=0;t<last;t++)
     {    ///pushing ready processes into queue
@@ -259,15 +240,12 @@ int main()
 
         }
          ///printing names of processes currently in queue
-                  priority_queue<process,vector<process>,comparefn>ptemp=q;
-        while(!ptemp.empty()){
-              cout <<"before"<< ptemp.top().processName <<" " <<ptemp.top().current_priority<<" ";
-              ptemp.pop();
-          }
-        cout<<" time="<<t<<endl;
-         int i=q.top().index;
-         q.pop();
-         q.push(p[i]);
+//        priority_queue<process,vector<process>,comparefn>temp=q;
+//        while(!temp.empty()){
+//              cout << temp.top().processName <<" ";
+//              temp.pop();
+//          }
+//        cout<<" time="<<t<<endl;
 
         ///to pop the first element in queue + setting their finish time+setting stars***
         if(algorithm==3 || algorithm==5){
@@ -305,36 +283,6 @@ int main()
 
             }
         }
-       if (algorithm ==8)
-      {
-
-           current=q.top().index;
-           q.pop();
-           priority_queue<process,vector<process>,comparefn> temp=q;
-           while(! temp.empty()){
-           int index_top=temp.top().index;
-           temp.pop();
-           q.pop();
-           p[index_top].current_priority= p[index_top].current_priority+1;
-           q.push(p[index_top]);}
-           p[current].current_priority=p[current].initial_priority;
-           for(int i=0;i<quantum;i++)
-           result[current][t+i]='*';
-           q.push(p[current]);
-           t+=quantum-1;
-
-
-
-}}
-
-
-
-
-
-
-
-
-
 
         ///to put points for ready processes...
             priority_queue<process,vector<process>,comparefn> temp2=q;
@@ -342,12 +290,12 @@ int main()
             //cout<<"here";
             int ready=temp2.top().index;
             temp2.pop();
-            if(algorithm==4 || algorithm==8)
+            if(algorithm==4)
             {if(ready==current)
             continue;}
               result[ready][t]='.';
             }
-
+        }
     }
 ///print process name
 switch (algorithm){
