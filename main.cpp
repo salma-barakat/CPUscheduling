@@ -17,6 +17,7 @@ using namespace std;
      float turnaroundTime;
      int remainingTime;
      int pushTime;
+     int priority;
      };
 
 int t=0;
@@ -106,6 +107,7 @@ int main()
             p[i].serviceTime=stoi(substr);
             p[i].remainingTime=stoi(substr);
         }
+        p[i].priority = -1;
         j++;
 
     }
@@ -123,7 +125,7 @@ int main()
             }
         }
     }
-
+    int current= -1;
     if(algorithm == 1){
         int i = 0;
         int busy = 0;
@@ -228,8 +230,81 @@ int main()
         }
     }
 
+    else if(algorithm == 6){
+        cout<<"inside"<<endl;
+        queue<process>que0;
+        queue<process>que1;
+        queue<process>que2;
+        queue<process>que3;
+        queue<process>que4;
+        cout<<"in"<<endl;
+        int busyTime = 0;
+        int min = 6;
+        int newPr = 0;    //flag to indicate if a new process arrived
+        int i=0;
+        t = 0;
+        while(t<last){
+            if(p[i].arrivalTime <= t){  //if nothing is running
+                p[i].priority = 0;
+                que0.push(p[i]);
+                i++;
+                newPr = 0;
+                cout<<"iff"<<endl;
+            }
+            for(int j=0; j<last; j++){
+                if(p[i].priority<min){
+
+                }
+            }
+            // while(!que0.empty() && !newPr){
+            //     current = que0.front().index;
+            //     que0.pop();
+            //     p[current].remainingTime -= 1;
+            //     result[current][t] = '*';
+            //     t++;
+            //     if(p[i].arrivalTime == t){
+            //         if(p[current].remainingTime > 0)
+            //             que1.push(p[current]);
+            //         else
+            //             p[current].finishTime = t;
+            //         newPr = 1;    //return to the beginning of loop to insert the new process
+            //     }
+            //     else if(p[current].remainingTime>0 && que1.empty() && que2.empty() && que3.empty() && que4.empty()){
+            //         while (p[i].arrivalTime != t && p[current].remainingTime > 0){
+            //             result[current][t] = '*';
+            //             t++;
+            //             p[current].remainingTime -= 1;
+            //             if(p[current].remainingTime==0){
+            //                 p[current].finishTime = t;
+            //             }
+            //         }
+            //     }
+            //     else if(p[current].remainingTime > 0)
+            //         que1.push(p[current]);
+            //     else
+            //         p[current].finishTime = t;
+            //}
+
+            ////////////////////////////////////////////////////
+                // if(que0.empty() && que1.empty() && que2.empty() && que3.empty() && que4.empty()){
+                //     result[i][t] = '*';
+                //     p[i].remainingTime -= 1;
+                //     if (p[i].remainingTime > 0){
+                //         que1.push(p[i]);
+                //     }
+                //     else{
+                //         p[i].finishTime = t+1;
+                //     }
+                // }
+                // else{   //if a process arrived and there are processes in queue
+                //     que0.push(p[i]);
+                // }
+
+        }
+    }
+
     else{
-    int current= -1;
+    current = -1;
     for(t=0;t<last;t++)
     {    ///pushing ready processes into queue
         for(int i=0;i<pCount;i++){
