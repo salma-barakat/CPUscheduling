@@ -45,6 +45,11 @@ bool operator()(process const& p1,process const&p2)
         else
             return r1<r2;
     }
+    else if(algorithm == 6){
+        if(p1.priority == p2.priority)
+            return p1.pushTime>p2.pushTime;
+        return p1.priority>p2.priority;
+    }
 
 
 //    if(p1.arrivalTime>t)
@@ -232,11 +237,7 @@ int main()
 
     else if(algorithm == 6){
         cout<<"inside"<<endl;
-        queue<process>que0;
-        queue<process>que1;
-        queue<process>que2;
-        queue<process>que3;
-        queue<process>que4;
+        priority_queue<process,vector<process>,comparefn> feedq;
         cout<<"in"<<endl;
         int busyTime = 0;
         int min = 6;
@@ -244,62 +245,75 @@ int main()
         int i=0;
         t = 0;
         while(t<last){
-            if(p[i].arrivalTime <= t){  //if nothing is running
+            if(p[i].arrivalTime == t){  //if nothing is running
                 p[i].priority = 0;
-                que0.push(p[i]);
+                p[i].pushTime = t;
+                feedq.push(p[i]);
                 i++;
-                newPr = 0;
-                cout<<"iff"<<endl;
             }
-            for(int j=0; j<last; j++){
-                if(p[i].priority<min){
 
+            while(!feedq.empty()){ //if the queue isn't empty and processor is free
+                cout<<t<<endl;
+                current = feedq.top().index;
+                feedq.pop();
+                p[current].remainingTime -= 1;
+                //cout<<"Running "<<p[current].processName<<t<<endl;
+                result[current][t] = '*';
+                t++;
+                if(p[current].remainingTime>0){
+                    //////////////////////////
+                    while(p[i].arrivalTime!=t && feedq.empty()){
+                        cout<<"empty"<<endl;
+                        p[current].remainingTime -= 1;
+                        result[current][t] = '*';
+                        if(p[current].remainingTime == 0)
+                            break;
+                        t++;
+                    }
+                    //////////////////////////
+                    cout<<"after while"<<t<<endl;
+                    if(p[current].remainingTime == 0)
+                        break;
+                    p[current].pushTime = t;
+                    p[current].priority += 1;
+                    feedq.push(p[current]);
+                }
+                else{
+                    p[current].finishTime = t;
                 }
             }
-            // while(!que0.empty() && !newPr){
-            //     current = que0.front().index;
-            //     que0.pop();
-            //     p[current].remainingTime -= 1;
-            //     result[current][t] = '*';
-            //     t++;
-            //     if(p[i].arrivalTime == t){
-            //         if(p[current].remainingTime > 0)
-            //             que1.push(p[current]);
-            //         else
-            //             p[current].finishTime = t;
-            //         newPr = 1;    //return to the beginning of loop to insert the new process
-            //     }
-            //     else if(p[current].remainingTime>0 && que1.empty() && que2.empty() && que3.empty() && que4.empty()){
-            //         while (p[i].arrivalTime != t && p[current].remainingTime > 0){
-            //             result[current][t] = '*';
-            //             t++;
-            //             p[current].remainingTime -= 1;
-            //             if(p[current].remainingTime==0){
-            //                 p[current].finishTime = t;
-            //             }
-            //         }
-            //     }
-            //     else if(p[current].remainingTime > 0)
-            //         que1.push(p[current]);
-            //     else
-            //         p[current].finishTime = t;
-            //}
 
-            ////////////////////////////////////////////////////
-                // if(que0.empty() && que1.empty() && que2.empty() && que3.empty() && que4.empty()){
-                //     result[i][t] = '*';
-                //     p[i].remainingTime -= 1;
-                //     if (p[i].remainingTime > 0){
-                //         que1.push(p[i]);
-                //     }
-                //     else{
-                //         p[i].finishTime = t+1;
-                //     }
-                // }
-                // else{   //if a process arrived and there are processes in queue
-                //     que0.push(p[i]);
-                // }
+            // else{
+                    //     while(p[i].arrivalTime!=t && p[current].remainingTime>0){
+                    //         t++;
+                    //         result[current][t] = '*';
+                    //         p[current].remainingTime -= 1;
+                    //         busyTime ++;
 
+                    //     }
+                    //     if(p[current].remainingTime > 0){
+                    //     p[current].pushTime = busyTime;
+                    //     p[current].priority += 1;
+                    //     feedq.push(p[current]);
+                    //     }
+                    // }
+
+            priority_queue<process,vector<process>,comparefn>temp=feedq;
+            while(!temp.empty()){
+                    cout << temp.top().processName <<",";
+                    cout << temp.top().priority <<"  ";
+                    temp.pop();
+
+                }
+                cout<<" time="<<t<<endl;
+
+        }
+
+        for(int pr = 0; pr<pCount; pr++){   //loop on processes to find ready time
+            for(int wait = p[pr].arrivalTime; wait<p[pr].finishTime; wait++){
+                if(result[pr][wait]!='*')
+                    result[pr][wait] = '.';
+            }
         }
     }
 
