@@ -285,6 +285,70 @@ int main()
         }
     }
 
+    else if(algorithm == 7){
+        priority_queue<process,vector<process>,comparefn> feedq2i;
+        int i=0;
+        int interval;
+        t = 0;
+        while(t<last){
+            if(p[i].arrivalTime <= t){  //if nothing is running
+                p[i].priority = 0;
+                p[i].pushTime = t;
+                feedq2i.push(p[i]);
+                i++;
+            }
+
+            while(!feedq2i.empty()){ //if the queue isn't empty and processor is free
+                current = feedq2i.top().index;
+                feedq2i.pop();
+                interval = pow(2, p[current].priority);
+                if(p[current].remainingTime < interval)
+                    interval = p[current].remainingTime;
+                p[current].remainingTime -= interval;
+                for(int j=t; j<t+interval; j++){
+                    result[current][j] = '*';
+                }
+                t += interval;
+                if(p[current].remainingTime>0){
+                    while(feedq2i.empty() && !(p[i].arrivalTime <= t) && p[current].remainingTime>0){
+                        //if no new process arrived and the queue is empty and the current process has remaining service time
+                        if(p[current].remainingTime < interval)
+                            interval = p[current].remainingTime;
+                        p[current].remainingTime -= interval;
+                        for(int j=t; j<t+interval; j++){
+                            result[current][j] = '*';
+                        }
+                        t += interval;
+                    }
+                    if(p[current].remainingTime != 0){
+                        p[current].pushTime = t;
+                        p[current].priority += 1;
+                        feedq2i.push(p[current]);
+                    }
+                    else
+                        p[current].finishTime = t;
+                }
+                else{
+                    p[current].finishTime = t;
+                }
+                if(p[i].arrivalTime == t)
+                    break;
+            }
+
+
+
+        }
+
+        for(int pr = 0; pr<pCount; pr++){   //loop on processes to find ready time
+            for(int wait = p[pr].arrivalTime; wait<p[pr].finishTime; wait++){
+                if(result[pr][wait]!='*')
+                    result[pr][wait] = '.';
+            }
+        }
+
+
+    }
+
     else{
     current = -1;
     for(t=0;t<last;t++)
@@ -375,7 +439,7 @@ case 6:
    cout<<"FB-1"<<"  ";
     break;
 case 7:
-   cout<<"FB-2i"<<"   ";
+   cout<<"FB-2i"<<"  ";
     break;
 case 8:
    cout<<"Aging"<<"   ";
