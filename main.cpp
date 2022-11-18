@@ -247,7 +247,7 @@ int main()
                 i++;
             }
 
-            while(t<last && !feedq.empty()){ //if the queue isn't empty and processor is free
+            while(!feedq.empty()){ //if the queue isn't empty and processor is free
                 current = feedq.top().index;
                 feedq.pop();
                 p[current].remainingTime -= 1;
