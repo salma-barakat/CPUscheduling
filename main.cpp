@@ -236,12 +236,7 @@ int main()
     }
 
     else if(algorithm == 6){
-        cout<<"inside"<<endl;
         priority_queue<process,vector<process>,comparefn> feedq;
-        cout<<"in"<<endl;
-        int busyTime = 0;
-        int min = 6;
-        int newPr = 0;    //flag to indicate if a new process arrived
         int i=0;
         t = 0;
         while(t<last){
@@ -252,47 +247,33 @@ int main()
                 i++;
             }
 
-            while(busyTime == t && !feedq.empty()){ //if the queue isn't empty and processor is free
+            while(t<last && !feedq.empty()){ //if the queue isn't empty and processor is free
                 current = feedq.top().index;
                 feedq.pop();
                 p[current].remainingTime -= 1;
-                //cout<<"Running "<<p[current].processName<<t<<endl;
                 result[current][t] = '*';
-                busyTime ++;
+                t ++;
                 if(p[current].remainingTime>0){
-                    p[current].pushTime = busyTime;
-                    p[current].priority += 1;
-                    feedq.push(p[current]);
+                    while(feedq.empty() && p[i].arrivalTime != t && p[current].remainingTime>0){
+                        //if no new process arrived and the queue is empty and the current process has remaining service time
+                        p[current].remainingTime -= 1;
+                        result[current][t] = '*';
+                        t++;
+                    }
+                    if(p[current].remainingTime!=0){
+                        p[current].pushTime = t;
+                        p[current].priority += 1;
+                        feedq.push(p[current]);
+                    }
+                    else
+                        p[current].finishTime = t;
                 }
                 else{
-                    p[current].finishTime = busyTime;
+                    p[current].finishTime = t;
                 }
+                if(p[i].arrivalTime == t)
+                    break;
             }
-
-            // else{
-                    //     while(p[i].arrivalTime!=t && p[current].remainingTime>0){
-                    //         t++;
-                    //         result[current][t] = '*';
-                    //         p[current].remainingTime -= 1;
-                    //         busyTime ++;
-
-                    //     }
-                    //     if(p[current].remainingTime > 0){
-                    //     p[current].pushTime = busyTime;
-                    //     p[current].priority += 1;
-                    //     feedq.push(p[current]);
-                    //     }
-                    // }
-
-            priority_queue<process,vector<process>,comparefn>temp=feedq;
-            while(!temp.empty()){
-                    cout << temp.top().processName <<",";
-                    cout << temp.top().priority <<"  ";
-                    temp.pop();
-
-                }
-                cout<<" time="<<t<<endl;
-            t++;
 
         }
 
@@ -391,7 +372,7 @@ case 5:
    cout<<"HRRN"<<"   ";
     break;
 case 6:
-   cout<<"FB-1"<<"   ";
+   cout<<"FB-1"<<"  ";
     break;
 case 7:
    cout<<"FB-2i"<<"   ";
@@ -489,5 +470,6 @@ for(int i=0;i<pCount;i++){
 cout<<endl;
 }
 
-    return 0;
+    return
+ 0;
 }
