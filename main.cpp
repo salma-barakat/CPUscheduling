@@ -252,34 +252,20 @@ int main()
                 i++;
             }
 
-            while(!feedq.empty()){ //if the queue isn't empty and processor is free
-                cout<<t<<endl;
+            while(busyTime == t && !feedq.empty()){ //if the queue isn't empty and processor is free
                 current = feedq.top().index;
                 feedq.pop();
                 p[current].remainingTime -= 1;
                 //cout<<"Running "<<p[current].processName<<t<<endl;
                 result[current][t] = '*';
-                t++;
+                busyTime ++;
                 if(p[current].remainingTime>0){
-                    //////////////////////////
-                    while(p[i].arrivalTime!=t && feedq.empty()){
-                        cout<<"empty"<<endl;
-                        p[current].remainingTime -= 1;
-                        result[current][t] = '*';
-                        if(p[current].remainingTime == 0)
-                            break;
-                        t++;
-                    }
-                    //////////////////////////
-                    cout<<"after while"<<t<<endl;
-                    if(p[current].remainingTime == 0)
-                        break;
-                    p[current].pushTime = t;
+                    p[current].pushTime = busyTime;
                     p[current].priority += 1;
                     feedq.push(p[current]);
                 }
                 else{
-                    p[current].finishTime = t;
+                    p[current].finishTime = busyTime;
                 }
             }
 
@@ -306,6 +292,7 @@ int main()
 
                 }
                 cout<<" time="<<t<<endl;
+            t++;
 
         }
 
