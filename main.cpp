@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iterator>
 #include <bits/stdc++.h>
+
 using namespace std;
     int algorithm;
     struct process{
@@ -45,7 +46,7 @@ bool operator()(process const& p1,process const&p2)
         else
             return r1<r2;
     }
-    else if(algorithm == 6){
+    else if(algorithm == 6 || algorithm == 7){
         if(p1.priority == p2.priority)
             return p1.pushTime>p2.pushTime;
         return p1.priority>p2.priority;
@@ -331,7 +332,7 @@ int main()
                 else{
                     p[current].finishTime = t;
                 }
-                if(p[i].arrivalTime == t)
+                if(p[i].arrivalTime <= t)
                     break;
             }
 
@@ -418,38 +419,39 @@ int main()
             }
         }
     }
-///print process name
-switch (algorithm){
-case 1:
-    cout<<"FCFS"<<"  ";
-    break;
-case 2:
-    cout<<"RR-"<<quantum<<"  ";
-    break;
-case 3:
-    cout<<"SPN"<<"   ";
-    break;
-case 4:
-   cout<<"SRT"<<"   ";
-    break;
-case 5:
-   cout<<"HRRN"<<"   ";
-    break;
-case 6:
-   cout<<"FB-1"<<"  ";
-    break;
-case 7:
-   cout<<"FB-2i"<<"  ";
-    break;
-case 8:
-   cout<<"Aging"<<"   ";
-    break;
-
-}
-
 ///print of trace
 if(line1=="trace")
   {
+    ///print process name
+    switch (algorithm){
+    case 1:
+        cout<<"FCFS"<<"  ";
+        break;
+    case 2:
+        cout<<"RR-"<<quantum<<"  ";
+        break;
+    case 3:
+        cout<<"SPN"<<"   ";
+        break;
+    case 4:
+    cout<<"SRT"<<"   ";
+        break;
+    case 5:
+    cout<<"HRRN"<<"   ";
+        break;
+    case 6:
+    cout<<"FB-1"<<"  ";
+        break;
+    case 7:
+    cout<<"FB-2i"<<" ";
+        break;
+    case 8:
+    cout<<"Aging"<<"   ";
+        break;
+
+    }
+
+
     int j=0;
     for(int i=0;i<=last;i++)
     {   if(j==10)
@@ -474,14 +476,46 @@ cout<<"------------------------------------------------"<<endl;
   }
 ///print of status
 else{
+
+///print process name
+switch (algorithm){
+case 1:
+    cout<<"FCFS";
+    break;
+case 2:
+    cout<<"RR-"<<quantum;
+    break;
+case 3:
+    cout<<"SPN";
+    break;
+case 4:
+   cout<<"SRT";
+    break;
+case 5:
+   cout<<"HRRN";
+    break;
+case 6:
+   cout<<"FB-1";
+    break;
+case 7:
+   cout<<"FB-2i";
+    break;
+case 8:
+   cout<<"Aging";
+    break;
+
+}
+
+
+
 cout<<endl;
-cout<<"Process"<<"    "<<"|  ";
+cout<<"Process"<<"    "<<"|";
 for(int i=0;i<pCount;i++)
-    cout<<p[i].processName<< "  |  ";
+    printf(" %2c  |", p[i].processName);
 cout<<endl;
-cout<<"Arrival"<<"    "<<"|  ";
+cout<<"Arrival"<<"    "<<"|";
 for(int i=0;i<pCount;i++)
-    cout<<p[i].arrivalTime<< "  |  ";
+    printf(" %2d  |", p[i].arrivalTime);
 cout<<endl;
 cout<<"Service"<<"    "<<"|  ";
 for(int i=0;i<pCount;i++)
@@ -491,15 +525,19 @@ for(int i=0;i<pCount;i++)
        cout<<p[i].serviceTime<< "  |  ";
     }
 cout<<endl;
-cout<<"Finish"<<"     "<<"|  ";
+cout<<"Finish"<<"     "<<"|";
 for(int i=0;i<pCount;i++)
      { if(i==pCount-1)
-       cout<<p[i].finishTime<< "  |-----|";
-       else
-       cout<<p[i].finishTime<< "  |  ";
+       cout<<" "<<p[i].finishTime<< "  |-----|";
+       else{
+        printf(" %2d  |", p[i].finishTime);
+        // if(p[i].finishTime<10)
+        //     cout<<" ";
+        // cout<<" "<<p[i].finishTime<<"  |";
+       }
     }
 cout<<endl;
-cout<<"Turnaround"<<" "<<"|  ";
+cout<<"Turnaround"<<" "<<"|";
 int turnaround_sum=0;
 
 for(int i=0;i<pCount;i++)
@@ -509,26 +547,27 @@ for(int i=0;i<pCount;i++)
     if(i==pCount-1)
     {
 
-        cout<<p[i].turnaroundTime<< "  | ";
+        printf(" %2.f  |", p[i].turnaroundTime);
         cout<<setprecision(2)<<fixed;
         cout<<turnaround_sum/(1.0*pCount)<<"|";
     }
 
-    else
-    cout<<p[i].turnaroundTime<< "  |  ";
+    else{
+        printf(" %2.f  |", p[i].turnaroundTime);
+    }
 }
 
 cout<<endl;
 
 float normturn_sum=0;
-cout<<"NormTurn"<<"   "<<"|  ";
+cout<<"NormTurn"<<"   "<<"| ";
  cout<<setprecision(2)<<fixed;
 for(int i=0;i<pCount;i++){
         normturn_sum+=p[i].turnaroundTime/(p[i].serviceTime*1.0);
 
         cout<<p[i].turnaroundTime/(p[i].serviceTime*1.0)<< "| ";
          if(i==pCount-1)
-        cout<<normturn_sum/(1.0*pCount)<<"|";
+        cout<<normturn_sum/(1.0*pCount)<<"|"<<endl;
 }
 
 cout<<endl;
