@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iterator>
 #include <bits/stdc++.h>
+
 using namespace std;
 int algorithm;
 struct process
@@ -50,6 +51,12 @@ struct comparefn
             else
                 return r1 < r2;
         }
+        else if (algorithm == 6 || algorithm == 7)
+        {
+            if (p1.priority == p2.priority)
+                return p1.pushTime > p2.pushTime;
+            return p1.priority > p2.priority;
+        }
 
         else if (algorithm == 8)
         {
@@ -67,8 +74,8 @@ struct comparefn
                 return p1.arrivalTime > p2.arrivalTime;
             else
                 return p1.current_priority < p2.current_priority;
-        }return true;
-
+        }
+        return true;
     }
 };
 
@@ -116,16 +123,11 @@ int main()
             vquant.push_back(0);
         }
     }
-
-    for (auto i = vquant.begin(); i != vquant.end(); ++i)
-        cout << *i << " ";
-    cout << endl;
     int last;
     cin >> last;
     int pCount;
     cin >> pCount;
     string arr[pCount];
-
     struct process p[pCount];
     char result[pCount][last];
     /// scanning and tokenizing
@@ -173,19 +175,16 @@ int main()
         algorithm = valg[i];
         quantum = vquant[i];
         priority_queue<process, vector<struct process>, comparefn> q;
-        //if (line1 == "trace")
-        //{
-            for (int i = 0; i < pCount; i++)
+        for (int i = 0; i < pCount; i++)
+        {
+            p[i].remainingTime = p[i].serviceTime;
+            p[i].finishTime = 0;
+            for (int j = 0; j < last; j++)
             {
-                p[i].remainingTime = p[i].serviceTime;
-                p[i].finishTime = 0;
-                for (int j = 0; j < last; j++)
-                {
-                    result[i][j] = ' ';
-                }
+                result[i][j] = ' ';
             }
-        //}
-
+        }
+    int current = -1;
         if (algorithm == 1)
         {
             int i = 0;
@@ -443,10 +442,9 @@ int main()
             }
         }
 
-
         else
         {
-            int current = -1;
+            current = -1;
             for (t = 0; t < last; t++)
             { /// pushing ready processes into queue
                 for (int i = 0; i < pCount; i++)
@@ -454,16 +452,15 @@ int main()
                     if (p[i].arrivalTime == t)
                     {
                         q.push(p[i]);
-                        //cout<<"this     "<<p[i].taken_before<<endl;
                     }
                 }
                 /// printing names of processes currently in queue
-                // priority_queue<process,vector<process>,comparefn>temp=q;
-                // while(!temp.empty()){
-                //       cout << temp.top().processName <<" ";
-                //       temp.pop();
-                //   }
-                // cout<<" time="<<t<<endl;
+                //        priority_queue<process,vector<process>,comparefn>temp=q;
+                //        while(!temp.empty()){
+                //              cout << temp.top().processName <<" ";
+                //              temp.pop();
+                //          }
+                //        cout<<" time="<<t<<endl;
 
                 /// to pop the first element in queue + setting their finish time+setting stars***
                 if (algorithm == 3 || algorithm == 5)
@@ -503,7 +500,6 @@ int main()
                     }
                 }
 
-
                 if (algorithm == 8)
                 {
 
@@ -537,12 +533,10 @@ int main()
                      p[current].current_priority = p[current].initial_priority;
                      q.push(p[current]);
                 }
-
                 /// to put points for ready processes...
                 priority_queue<process, vector<process>, comparefn> temp2 = q;
                 while (!temp2.empty())
                 {
-
                     int ready = temp2.top().index;
                     temp2.pop();
                     if (algorithm == 4 || algorithm == 8)
@@ -554,6 +548,9 @@ int main()
                 }
             }
         }
+    /// print of trace
+    if (line1 == "trace")
+    {
         /// print process name
         switch (algorithm)
         {
@@ -578,11 +575,11 @@ int main()
             break;
         case 6:
             cout << "FB-1"
-                 << "   ";
+                 << "  ";
             break;
         case 7:
             cout << "FB-2i"
-                 << "   ";
+                 << " ";
             break;
         case 8:
             cout << "Aging"
@@ -590,9 +587,6 @@ int main()
             break;
         }
 
-        /// print of trace
-        if (line1 == "trace")
-        {
             int j = 0;
             for (int i = 0; i <= last; i++)
             {
@@ -618,7 +612,37 @@ int main()
         }
         /// print of status
         else
+    {
+
+        /// print process name
+        switch (algorithm)
         {
+        case 1:
+            cout << "FCFS";
+            break;
+        case 2:
+            cout << "RR-" << quantum;
+            break;
+        case 3:
+            cout << "SPN";
+            break;
+        case 4:
+            cout << "SRT";
+            break;
+        case 5:
+            cout << "HRRN";
+            break;
+        case 6:
+            cout << "FB-1";
+            break;
+        case 7:
+            cout << "FB-2i";
+            break;
+        case 8:
+            cout << "Aging";
+            break;
+        }
+
             cout << endl;
             cout << "Process"
                  << "    "
