@@ -646,15 +646,15 @@ int main()
             cout << endl;
             cout << "Process"
                  << "    "
-                 << "|  ";
+                 << "|";
             for (int i = 0; i < pCount; i++)
-                cout << p[i].processName << "  |  ";
+                cout <<"  "<< p[i].processName << "  |";
             cout << endl;
             cout << "Arrival"
                  << "    "
-                 << "|  ";
+                 << "|";
             for (int i = 0; i < pCount; i++)
-                cout << p[i].arrivalTime << "  |  ";
+                printf(" %2d  |", p[i].arrivalTime);
             cout << endl;
             cout << "Service"
                  << "    "
@@ -669,18 +669,20 @@ int main()
             cout << endl;
             cout << "Finish"
                  << "     "
-                 << "|  ";
+                 << "|";
             for (int i = 0; i < pCount; i++)
             {
                 if (i == pCount - 1)
-                    cout << p[i].finishTime << "  |-----|";
+                    printf(" %2d  |-----|", p[i].finishTime);
+                    //cout << p[i].finishTime << "  |-----|";
                 else
-                    cout << p[i].finishTime << "  |  ";
+                    printf(" %2d  |", p[i].finishTime);
+                    //cout << p[i].finishTime << "  |  ";
             }
             cout << endl;
             cout << "Turnaround"
                  << " "
-                 << "|  ";
+                 << "|";
             int turnaround_sum = 0;
 
             for (int i = 0; i < pCount; i++)
@@ -689,30 +691,31 @@ int main()
                 turnaround_sum += p[i].turnaroundTime;
                 if (i == pCount - 1)
                 {
-
-                    cout << p[i].turnaroundTime << "  | ";
+                    printf(" %2.f  |", p[i].turnaroundTime);
                     cout << setprecision(2) << fixed;
-                    cout << turnaround_sum / (1.0 * pCount) << "|";
+                    float tempp = turnaround_sum / (1.0 * pCount);
+                    printf("%5.2f|", tempp);
+                    //cout << turnaround_sum / (1.0 * pCount) << "|";
                 }
 
                 else
-                    cout << p[i].turnaroundTime << "  |  ";
+                    printf("%3.f  |", p[i].turnaroundTime);
             }
 
             cout << endl;
 
             float normturn_sum = 0;
-            cout << "NormTurn"
-                 << "   "
-                 << "|  ";
+            cout << "NormTurn"<< "   "<< "|";
             cout << setprecision(2) << fixed;
             for (int i = 0; i < pCount; i++)
             {
                 normturn_sum += p[i].turnaroundTime / (p[i].serviceTime * 1.0);
+                printf("%5.2f|", p[i].turnaroundTime / (p[i].serviceTime * 1.0));
+                if (i == pCount - 1){
+                    printf("%5.2f|", normturn_sum / (1.0 * pCount));
+                    cout<<endl;
+                }
 
-                cout << p[i].turnaroundTime / (p[i].serviceTime * 1.0) << "| ";
-                if (i == pCount - 1)
-                    cout << normturn_sum / (1.0 * pCount) << "|";
             }
 
             cout << endl;
