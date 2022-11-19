@@ -375,10 +375,7 @@ int main()
                     queue<process> temp8;
                     ///
 
-                    current = q.top().index;
-                    //p[current].taken_before=1;
-                    q.pop();
-                    result[current][t] = '*';
+
 
                     while (!q.empty())
                     {
@@ -395,7 +392,12 @@ int main()
                         p[index].current_priority = p[index].current_priority + 1;
                         q.push(p[index]);
                     }
-
+                    current = q.top().index;
+                    //p[current].taken_before=1;
+                    q.pop();
+                    for(int y=0;y<quantum;y++)
+                    result[current][t+y] = '*';
+                    t+=quantum-1;
                      p[current].current_priority = p[current].initial_priority;
                      q.push(p[current]);
                 }
