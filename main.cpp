@@ -229,7 +229,7 @@ int main()
             {
                 if (p[i].arrivalTime <= t)
                 { // if nothing is running
-                    p[i].pushTime = t;
+                    p[i].pushTime = p[i].arrivalTime;
                     q2.push(p[i]);
                     if(i<pCount-1)
                         i++;
@@ -285,90 +285,6 @@ int main()
                 }
             }
 
-
-
-
-            // for (t = 0; t < last; t++)
-            // {
-            //     if (q2.empty())
-            //     {
-            //         if (busyTime == t && p[i].arrivalTime <= t)
-            //         { // if nothing is running and no new process arrived
-            //             //check if the process needs less time than the quantum
-            //             if (p[i].remainingTime < quantum)
-            //                 quant = p[i].remainingTime;
-            //             else
-            //                 quant = quantum;
-            //             for (int j = t; j < t + quant; j++)
-            //             {
-            //                 result[i][j] = '*';
-            //             }
-            //             busyTime = t + quant;   //the processor will keep running this process from t to t+quant
-            //             p[i].remainingTime = p[i].remainingTime - quant;
-            //             if (p[i].remainingTime > 0)
-            //             {
-            //                 p[i].pushTime = busyTime;
-            //                 q2.push(p[i]);
-            //             }
-            //             else
-            //                 p[i].finishTime = busyTime;
-            //             i++;
-            //         }
-            //         else if (busyTime != t && p[i].arrivalTime == t)
-            //         { // if a process is running and another arrived, put the new in queue
-            //             p[i].pushTime = t;
-            //             q.push(p[i]);
-            //         }
-            //     }
-
-            //     else if (busyTime == t && !q2.empty())
-            //     { // if nothing is running
-            //         if (p[i].arrivalTime <= q2.front().pushTime)
-            //         { // if a process arrived whose arrival is before or at same time of last push in queue
-            //             //take the new process
-            //             if (p[i].remainingTime < quantum)
-            //                 quant = p[i].remainingTime;
-            //             else
-            //                 quant = quantum;
-            //             for (int j = t; j < t + quant; j++)
-            //             {
-            //                 result[i][j] = '*';
-            //             }
-            //             busyTime = t + quant;
-            //             p[i].remainingTime = p[i].remainingTime - quant;
-            //             if (p[i].remainingTime > 0)
-            //             {
-            //                 p[i].pushTime = busyTime;
-            //                 q2.push(p[i]);
-            //             }
-            //             else
-            //                 p[i].finishTime = busyTime;
-            //             i++;
-            //         }
-            //         else
-            //         { // pop from queue
-            //             int current = q2.front().index;
-            //             q2.pop();
-            //             if (p[current].remainingTime < quantum)
-            //                 quant = p[current].remainingTime;
-            //             else
-            //                 quant = quantum;
-            //             for (int j = t; j < t + quant; j++)
-            //             {
-            //                 result[current][j] = '*';
-            //             }
-            //             busyTime = t + quant;
-            //             p[current].remainingTime = p[current].remainingTime - quant;
-            //             if (p[current].remainingTime > 0)
-            //             {
-            //                 p[current].pushTime = busyTime;
-            //                 q2.push(p[current]);
-            //             }
-            //             else
-            //                 p[current].finishTime = busyTime;
-            //         }
-            //     }
-            // }
             for (int pr = 0; pr < pCount; pr++)
             { // loop on processes to find ready time
                 for (int wait = p[pr].arrivalTime; wait < p[pr].finishTime; wait++)
