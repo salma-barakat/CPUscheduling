@@ -66,17 +66,8 @@ struct comparefn
         else if (algorithm == 8)
         {
             if (p1.current_priority == p2.current_priority)
-            //{
-//                if(p1.taken_before==p2.taken_before)
-//                {
-//                   return p1.arrivalTime > p2.arrivalTime;
-//                }
-//                else
-//                {
-//                  p1.taken_before>p2.taken_before;
-//                }
-//            }
-                return p1.arrivalTime > p2.arrivalTime;
+
+                return p1.pushTime > p2.pushTime;
             else
                 return p1.current_priority < p2.current_priority;
         }
@@ -184,6 +175,9 @@ int main()
         {
             p[i].remainingTime = p[i].serviceTime;
             p[i].finishTime = 0;
+            p[i].pushTime=0;
+           //
+            p[i].initial_priority=p[i].serviceTime;
             for (int j = 0; j < last; j++)
             {
                 result[i][j] = ' ';
@@ -437,7 +431,7 @@ int main()
                 for (int i = 0; i < pCount; i++)
                 {
                     if (p[i].arrivalTime == t)
-                    {
+                    {   p[i].pushTime=t;
                         q.push(p[i]);
                     }
                 }
@@ -492,6 +486,7 @@ int main()
 
                     int index;
                     queue<process> temp8;
+
                     ///
 
 
@@ -508,19 +503,59 @@ int main()
                         index = temp8.front().index;
                         temp8.pop();
                         // if(index!=current)
+
+
                         p[index].current_priority = p[index].current_priority + 1;
-                        q.push(p[index]);
+
+
+                    if (current>-1 && index==current)
+                    {
+////                        p[index].current_priority = p[index].initial_priority;
+                          continue;
+
                     }
-                    current = q.top().index;
-                    //p[current].taken_before=1;
-                    q.pop();
+
+                    q.push(p[index]);
+
+                    }
+
+
+                    if(current>-1)
+                    {
+                        p[current].current_priority = p[current].initial_priority;
+                        p[current].pushTime=t;
+                        q.push(p[current]);
+
+                    }
+
+                         priority_queue<process,vector<process>,comparefn>temp=q;
+                        while(!temp.empty()){
+                              cout << temp.top().processName <<"push time "<<temp.top().pushTime<<" priority "<<temp.top().current_priority<<" ";
+                              temp.pop();
+                          }
+                        cout<<" time="<<t<<endl;
+
+
+                      current = q.top().index;
+                      q.pop();
+                      cout<<p[current].processName<<"  poppped at  time="<<t<<endl;
+//
+
+
+
+
                     for(int y=0;y<quantum;y++)
                     result[current][t+y] = '*';
+
+                    //p[current].last_worked=t+quantum-1;
+
+                    //q.push(p[current]);
                     t+=quantum-1;
-                     p[current].current_priority = p[current].initial_priority;
-                     q.push(p[current]);
+
                 }
-                /// to put points for ready processes...
+
+
+                // to put points for ready processes...
                 priority_queue<process, vector<process>, comparefn> temp2 = q;
                 while (!temp2.empty())
                 {
@@ -530,6 +565,7 @@ int main()
                     {
                         if (ready == current)
                             continue;
+
                     }
                     result[ready][t] = '.';
                 }
