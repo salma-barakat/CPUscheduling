@@ -24,5 +24,5 @@ One character specifying a process name, Arrival Time, Service Time.
 
 ## Contributors:
  - [Salma Barakat](https://github.com/salma-barakat)
- - [Youmna Ahmed] (https://github.com/YoumnaAhmed)
+ - [Youmna Ahmed](https://github.com/YoumnaAhmed)
 
