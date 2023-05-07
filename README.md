@@ -21,3 +21,8 @@ Round Robin and Aging have a parameter specifying the quantum q to be used. Ther
 - Line4. An integer specifying the number of processes to be simulated. None of the processes is making a blocking call.
 - Line5. Start of description of processes. Each process is to be described on a separate line. For algorithms 1 through 7, each process is described using a comma-separated list:
 One character specifying a process name, Arrival Time, Service Time.
+
+## Contributors:
+ - [Salma Barakat](https://github.com/salma-barakat)
+ - [Youmna Ahmed] (https://github.com/YoumnaAhmed)
+
